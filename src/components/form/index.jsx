@@ -6,6 +6,7 @@ import { URL } from '../../utils/constants';
 import Adapter from '../../utils/adapter';
 import useScript from '../../utils/useScript';
 import { FetchingStateProvider } from '../fetching';
+import { NAME } from '../../utils/constants';
 
 const withCheckout = (Component) => (props) => {
   const [ready] = useScript(URL);
@@ -31,9 +32,10 @@ const withCheckout = (Component) => (props) => {
 
       pre();
       remoteForm.current.createToken((r) =>
-        post(r).then(() =>
-          invoke(remoteForm, 'current.clearAll'),
-        ),
+        post(r).then(() => {
+          document.getElementById(NAME).value = '';
+          return invoke(remoteForm, 'current.clearAll');
+        }),
       );
     },
     [remoteForm],

@@ -5,6 +5,7 @@ import Bambora, {
   CreditCardField,
   CvvField,
   ExpiryField,
+  Name,
 } from '.';
 
 export default {
@@ -26,6 +27,7 @@ export const Demo = () => (
       })
     }
   >
+    <Name label="Name" />
     <CreditCardField label="Credit card number" />
     <CvvField label="CVV" />
     <ExpiryField label="Expiry" />

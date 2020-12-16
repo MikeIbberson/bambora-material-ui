@@ -37,6 +37,7 @@
     "@material-ui/lab": "^4.0.0-alpha.57",
     "@material-ui/styles": "^4.11.2",
     "@storybook/storybook-deployer": "^2.8.7",
+    "@wojtekmaj/enzyme-adapter-react-17": "^0.3.2",
     "axios": "^0.21.0",
     "lodash": "^4.17.20",
     "prop-types": "^15.7.2",
