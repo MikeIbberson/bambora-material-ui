@@ -14,13 +14,12 @@ const Submit = ({ label, color, variant, size }) => {
   const { fetching } = React.useContext(FetchingState);
 
   return (
-    <Box mt={1}>
+    <Box mt={1} mx={0.5}>
       {fetching ? (
         <CircularProgress />
       ) : (
         <Button
           id={PAY}
-          disabled
           color={color}
           variant={variant}
           size={size}

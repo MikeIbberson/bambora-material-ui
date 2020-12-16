@@ -5,6 +5,7 @@ import Bambora, {
   CreditCardField,
   CvvField,
   ExpiryField,
+  Name,
 } from '.';
 
 export default {
@@ -18,14 +19,17 @@ export default {
 
 export const Demo = () => (
   <Bambora
-    onTokenization={() =>
+    onTokenization={(e) =>
       new Promise((resolve) => {
         setTimeout(() => {
+          // eslint-disable-next-line
+          console.log(e);
           resolve();
         }, 2000);
       })
     }
   >
+    <Name label="Name" />
     <CreditCardField label="Credit card number" />
     <CvvField label="CVV" />
     <ExpiryField label="Expiry" />

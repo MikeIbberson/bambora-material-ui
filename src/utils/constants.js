@@ -3,6 +3,7 @@ export const SHRINK = 'Mui-shrink';
 export const EXP = 'expiry';
 export const CVV = 'cvv';
 export const CARD = 'card-number';
+export const NAME = 'name';
 export const PAY = 'pay-now';
 export const DISABLED = 'Mui-disabled';
 export const IN_FOCUS = 'data-bambora-in-focus';

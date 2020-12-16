@@ -50,18 +50,6 @@ class FormFieldComponents {
     this.$bambora = instance;
   }
 
-  static enableSubmit() {
-    const e = document.getElementById(PAY);
-    invoke(e, 'removeAttribute', 'disabled');
-    invoke(e, 'classList.remove', DISABLED);
-  }
-
-  static disableSubmit() {
-    const e = document.getElementById(PAY);
-    invoke(e, 'setAttribute', 'disabled', true);
-    invoke(e, 'classList.add', DISABLED);
-  }
-
   setHelper(msg) {
     const e = this.helper;
     if (!e) return;
@@ -178,7 +166,6 @@ export default (checkout, options) => {
     'empty',
     route(function(v) {
       this.setValue(!v.empty);
-      FormFieldComponents.disableSubmit();
     }),
   );
 
@@ -194,11 +181,8 @@ export default (checkout, options) => {
     route(function(v) {
       if (v.complete) {
         this.isComplete();
-        if (checkFormFieldComponentReadiness(state))
-          FormFieldComponents.enableSubmit();
       } else {
         this.isIncomplete();
-        FormFieldComponents.disableSubmit();
       }
     }),
   );
