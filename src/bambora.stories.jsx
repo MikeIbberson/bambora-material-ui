@@ -19,9 +19,11 @@ export default {
 
 export const Demo = () => (
   <Bambora
-    onTokenization={() =>
+    onTokenization={(e) =>
       new Promise((resolve) => {
         setTimeout(() => {
+          // eslint-disable-next-line
+          console.log(e);
           resolve();
         }, 2000);
       })

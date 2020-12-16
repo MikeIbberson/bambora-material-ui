@@ -31,12 +31,16 @@ const withCheckout = (Component) => (props) => {
       e.preventDefault();
 
       pre();
-      remoteForm.current.createToken((r) =>
-        post(r).then(() => {
-          document.getElementById(NAME).value = '';
+      remoteForm.current.createToken((r) => {
+        const nameInput = document.getElementById(NAME);
+        return post({
+          ...r,
+          cardholder: nameInput.value,
+        }).then(() => {
+          nameInput.value = '';
           return invoke(remoteForm, 'current.clearAll');
-        }),
-      );
+        });
+      });
     },
     [remoteForm],
   );
