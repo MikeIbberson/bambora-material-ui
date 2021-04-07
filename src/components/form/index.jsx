@@ -6,47 +6,47 @@ import { URL } from '../../utils/constants';
 import Adapter from '../../utils/adapter';
 import useScript from '../../utils/useScript';
 import { FetchingStateProvider } from '../fetching';
-import { NAME } from '../../utils/constants';
+import CardholderElementProxy from '../../utils/cardholderElementProxy';
 
-const withCheckout = (Component) => (props) => {
-  const [ready] = useScript(URL);
-  const remoteForm = React.useRef();
+const withCheckout = (Component) =>
+  React.forwardRef((props, ref) => {
+    const [ready] = useScript(URL);
+    const remoteForm = ref || React.useRef();
 
-  React.useEffect(() => {
-    if (
-      (!ready && !('customcheckout' in window)) ||
-      remoteForm.current
-    )
-      return undefined;
+    React.useEffect(() => {
+      if (
+        (!ready && !('customcheckout' in window)) ||
+        remoteForm.current
+      )
+        return undefined;
 
-    const inst = window.customcheckout();
-    Adapter(inst, props.options);
-    remoteForm.current = inst;
+      const inst = window.customcheckout();
+      Adapter(inst, props.options);
+      remoteForm.current = inst;
 
-    return () => invoke(remoteForm, 'current.clearAll');
-  }, [ready]);
+      return () => invoke(remoteForm, 'current.clearAll');
+    }, [ready]);
 
-  const handleCheckout = React.useCallback(
-    (pre, post) => (e) => {
-      e.preventDefault();
+    const handleCheckout = React.useCallback(
+      (pre, post) => (e) => {
+        e.preventDefault();
 
-      pre();
-      remoteForm.current.createToken((r) => {
-        const nameInput = document.getElementById(NAME);
-        return post({
-          ...r,
-          cardholder: nameInput.value,
-        }).then(() => {
-          nameInput.value = '';
-          return invoke(remoteForm, 'current.clearAll');
+        pre();
+        remoteForm.current.createToken((r) => {
+          const ch = CardholderElementProxy();
+          return post(ch.addToPayload(r)).then(() => {
+            ch.clear();
+            return invoke(remoteForm, 'current.clearAll');
+          });
         });
-      });
-    },
-    [remoteForm],
-  );
+      },
+      [remoteForm],
+    );
 
-  return <Component {...props} onSubmit={handleCheckout} />;
-};
+    return (
+      <Component {...props} onSubmit={handleCheckout} />
+    );
+  });
 
 const Form = ({ onTokenization, onSubmit, children }) => {
   const [fetching, setFetching] = React.useState(false);
