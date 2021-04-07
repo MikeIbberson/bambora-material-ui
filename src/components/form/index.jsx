@@ -13,6 +13,9 @@ const withCheckout = (Component) =>
     const [ready] = useScript(URL);
     const remoteForm = ref || React.useRef();
 
+    const clearAll = () =>
+      invoke(remoteForm, 'current.clearAll');
+
     React.useEffect(() => {
       if (
         (!ready && !('customcheckout' in window)) ||
@@ -24,20 +27,19 @@ const withCheckout = (Component) =>
       Adapter(inst, props.options);
       remoteForm.current = inst;
 
-      return () => invoke(remoteForm, 'current.clearAll');
+      return clearAll;
     }, [ready]);
 
     const handleCheckout = React.useCallback(
       (pre, post) => (e) => {
         e.preventDefault();
-
         pre();
+
         remoteForm.current.createToken((r) => {
           const ch = CardholderElementProxy();
-          return post(ch.addToPayload(r)).then(() => {
-            ch.clear();
-            return invoke(remoteForm, 'current.clearAll');
-          });
+          return post(ch.addToPayload(r))
+            .then(ch.clear)
+            .then(clearAll);
         });
       },
       [remoteForm],
