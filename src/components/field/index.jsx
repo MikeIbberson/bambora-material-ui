@@ -98,7 +98,10 @@ TextFieldWrapper.propTypes = {
   /**
    * Error message to display as field helper text.
    */
-  error: PropTypes.string,
+  error: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.bool,
+  ]),
 
   /**
    * Material UI margin name
