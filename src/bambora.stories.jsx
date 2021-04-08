@@ -58,3 +58,38 @@ export const WithOptions = () => (
     <Submit />
   </Bambora>
 );
+
+export const WithRef = () => {
+  const ref = React.createRef();
+
+  return (
+    <Bambora
+      ref={ref}
+      options={{
+        'card-number': {
+          brands: ['visa'],
+        },
+      }}
+      onTokenization={() =>
+        new Promise((resolve) => {
+          setTimeout(() => {
+            resolve();
+          }, 2000);
+        })
+      }
+    >
+      <CreditCardField label="Credit card number" />
+      <CvvField label="CVV" />
+      <ExpiryField label="Expiry" />
+      <button
+        type="button"
+        onClick={() => {
+          // eslint-disable-next-line
+          console.log(ref);
+        }}
+      >
+        Log ref to console
+      </button>
+    </Bambora>
+  );
+};

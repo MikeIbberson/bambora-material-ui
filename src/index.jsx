@@ -10,18 +10,23 @@ export { default as Submit } from './components/submit';
  * This is very important!
  * We must wire-up the IDs before exporting.
  */
-export const Name = (props) => (
-  <Grid item xs>
-    <TextField
-      id={NAME}
-      name={NAME}
-      fullWidth
-      required
-      {...Field.defaultProps}
-      {...props}
-    />
-  </Grid>
-);
+export const Name = (props) => {
+  const field = Field.defaultProps;
+  field.error = Boolean(field.error);
+
+  return (
+    <Grid item xs>
+      <TextField
+        id={NAME}
+        name={NAME}
+        fullWidth
+        required
+        {...field}
+        {...props}
+      />
+    </Grid>
+  );
+};
 
 export const CreditCardField = (props) => (
   <Field id={CARD} {...props} />
